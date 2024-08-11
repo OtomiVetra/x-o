@@ -24,17 +24,8 @@ export const App = () => {
 	return (
 		<div className={style.App}>
 			<h1 className={style.title}>Крестики-нолики</h1>
-			<Field
-				field={state.field}
-				currentPlayer={state.currentPlayer}
-				isGameEnded={state.isGameEnded}
-			/>
-			<Information
-				isDraw={state.isDraw}
-				isGameEnded={state.isGameEnded}
-				currentPlayer={state.currentPlayer}
-				winner={state.winner}
-			/>
+			<Field />
+			<Information />
 			<button onClick={resetGame}>Начать заново</button>
 		</div>
 	);

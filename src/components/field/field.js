@@ -1,16 +1,28 @@
 import style from './field.module.css';
-import PropTypes from 'prop-types';
 import { store } from '../../store';
+import { useEffect, useState } from 'react';
 
-export const Field = ({ field, currentPlayer, isGameEnded }) => {
+export const Field = () => {
+	const [state, setState] = useState(store.getState());
+
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setState(store.getState());
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+
 	const handleClick = (index) => {
-		if (field[index] !== '' || isGameEnded) {
+		if (state.field[index] !== '' || state.isGameEnded) {
 			return;
 		}
 
 		store.dispatch({
 			type: 'MAKE_MOVE',
-			payload: { index, player: currentPlayer },
+			payload: { index, player: state.currentPlayer },
 		});
 	};
 
@@ -25,7 +37,7 @@ export const Field = ({ field, currentPlayer, isGameEnded }) => {
 
 	return (
 		<div className={style.Field}>
-			{field.map((cell, index) => (
+			{state.field.map((cell, index) => (
 				<button
 					key={index}
 					className={style.cell}
@@ -37,10 +49,4 @@ export const Field = ({ field, currentPlayer, isGameEnded }) => {
 			))}
 		</div>
 	);
-};
-
-Field.propTypes = {
-	currentPlayer: PropTypes.string,
-	isGameEnded: PropTypes.bool,
-	field: PropTypes.array,
 };

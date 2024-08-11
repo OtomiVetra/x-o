@@ -1,22 +1,28 @@
 import style from './information.module.css';
-import PropTypes from 'prop-types';
+import { store } from '../../store';
+import { useEffect, useState } from 'react';
 
-export const Information = ({ isDraw, isGameEnded, currentPlayer, winner }) => {
+export const Information = () => {
+	const [state, setState] = useState(store.getState());
+
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setState(store.getState());
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+
 	let status;
-	if (isDraw) {
+	if (state.isDraw) {
 		status = 'Ничья';
-	} else if (isGameEnded && winner) {
-		status = `Победа: ${winner}`;
+	} else if (state.isGameEnded && state.winner) {
+		status = `Победа: ${state.winner}`;
 	} else {
-		status = `Ходит: ${currentPlayer}`;
+		status = `Ходит: ${state.currentPlayer}`;
 	}
 
 	return <div className={style.Information}>{status}</div>;
-};
-
-Information.propTypes = {
-	isDraw: PropTypes.bool,
-	isGameEnded: PropTypes.bool,
-	currentPlayer: PropTypes.string,
-	winner: PropTypes.string,
 };
