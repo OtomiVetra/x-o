@@ -1,27 +1,16 @@
 import style from './information.module.css';
 import { store } from '../../store';
-import { useEffect, useState } from 'react';
 
 export const Information = () => {
-	const [state, setState] = useState(store.getState());
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	const { isGameEnded, winner, currentPlayer, isDraw } = store.getState();
 
 	let status;
-	if (state.isDraw) {
+	if (isDraw) {
 		status = 'Ничья';
-	} else if (state.isGameEnded && state.winner) {
-		status = `Победа: ${state.winner}`;
+	} else if (isGameEnded && winner) {
+		status = `Победа: ${winner}`;
 	} else {
-		status = `Ходит: ${state.currentPlayer}`;
+		status = `Ходит: ${currentPlayer}`;
 	}
 
 	return <div className={style.Information}>{status}</div>;
