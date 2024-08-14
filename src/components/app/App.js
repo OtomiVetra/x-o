@@ -1,24 +1,13 @@
 import { Information } from '../information/information';
 import { Field } from '../field/field';
-import { useEffect, useState } from 'react';
 import style from './App.module.css';
-import { store } from '../../store';
+import { useDispatch } from 'react-redux';
 
 export const App = () => {
-	const [state, setState] = useState(store.getState());
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	const dispatch = useDispatch();
 
 	const resetGame = () => {
-		store.dispatch({ type: 'RESET_GAME' });
+		dispatch({ type: 'RESET_GAME' });
 	};
 
 	return (

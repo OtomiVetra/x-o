@@ -1,15 +1,16 @@
 import style from './field.module.css';
-import { store } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const Field = () => {
-	const { field, currentPlayer, isGameEnded } = store.getState();
+	const { field, currentPlayer, isGameEnded } = useSelector((state) => state);
+	const dispatch = useDispatch();
 
 	const handleClick = (index) => {
 		if (field[index] !== '' || isGameEnded) {
 			return;
 		}
 
-		store.dispatch({
+		dispatch({
 			type: 'MAKE_MOVE',
 			payload: { index, player: currentPlayer },
 		});
